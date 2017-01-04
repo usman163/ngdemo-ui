@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<body>
+
+	<script>
+		var app = angular.module("ngApp", []);
+		app.controller("ngCtrl", [ '$scope', '$http', function($scope, $http) {
+			
+		
+			$http({
+				url : "http://54.221.179.25/ngdemo/web/users",
+				method : "GET"
+			}).then(function(response) {
+				$scope.users = response.data;
+			});
+		
+		$scope.addUser = function(){
+			$scope.users.push($scope.newUser);
+			$http({
+				url : "http://54.221.179.25/ngdemo/web/users",
+				method : "POST",
+				data: $scope.newUser
+			}).then(function(response) {
+				$scope.users = response.data;
+			});
+		}
+		
+		
+		}]);
+	</script>
+
+	<div ng-app="ngApp" ng-controller="ngCtrl" >
+		<table>
+			<th>User ID</th>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<tr ng-repeat="user in users">
+				<td>{{user.id}}</td>
+				<td>{{user.firstName}}</td>
+				<td>{{user.lastName}}</td>
+			</tr>
+		</table>
+		<div>
+			<h3>Add an User</h3>
+			<div>
+				<label>User ID :</label> <input type="text" ng-model="newUser.id">
+			</div>
+			<div>
+				<label>First Name :</label> <input type="text"
+					ng-model="newUser.firstName">
+			</div>
+			<div>
+				<label>Last Name :</label> <input type="text"
+					ng-model="newUser.lastName">
+			</div>
+			<button type="button" ng-click="addUser()" title="Add User" > Add User</button>
+		</div>
+	</div>
+
+</body>
+</html>
